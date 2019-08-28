@@ -4,12 +4,12 @@ set -eu
 
 max=20
 url="$1"
-maxpid="$(curl --silent "$url/proc/sys/kernel/pid_max")"
-selfcmdline="$(curl --silent "$url/proc/self/cmdline" | strings | tr '\r\n' ' ')"
+maxpid="$(curl -k --silent "$url/proc/sys/kernel/pid_max")"
+selfcmdline="$(curl -k --silent "$url/proc/self/cmdline" | strings | tr '\r\n' ' ')"
 
 function getpid(){
   pid="$1"
-  cmdline="$(curl --silent "$url/proc/$pid/cmdline" | strings | tr '\r\n' ' ')"
+  cmdline="$(curl -k --silent "$url/proc/$pid/cmdline" | strings | tr '\r\n' ' ')"
   if [[ "$cmdline" != "" && "$cmdline" != "$selfcmdline" ]];then
     echo -e "PID: $pid\t$cmdline"
   fi
